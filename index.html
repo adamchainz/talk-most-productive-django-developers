@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang=en-GB>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>The most productive Django developers, maybe</title>
+
+<link rel="stylesheet" href="dist/reset.css">
+<link rel="stylesheet" href="dist/reveal.css">
+<link rel="stylesheet" href="dist/theme/django.css">
+
+<!-- Theme used for syntax highlighted code -->
+<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+<style>
+  .hljs-deletion { color: #e22e2e }
+</style>
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section>
+  <h1>The most productive Django developers<span class=fragment>, maybe</span></h1>
+</section>
+
+<section>
+  <h2>Lines of code per day</h2>
+</section>
+
+<section>
+  <img src=img/contributors.png class=r-stretch>
+</section>
+
+<section>
+  <h2>django-upgrade</h2>
+  <h3 class=fragment><em>Automatically upgrade your Django project code.</em></h3>
+</section>
+
+<section>
+  <h2>Install with pre-commit</h2>
+  <pre><code class=language-yaml data-trim>
+-   repo: https://github.com/adamchainz/django-upgrade
+    rev: "1.10.0"
+    hooks:
+    -   id: django-upgrade
+        args: [--target-version, "4.1"]
+  </code></pre>
+</section>
+
+<section>
+  <h2>Or install and run directly</h2>
+  <pre><code class=language-shell data-trim>
+$ python -m pip install django-upgrade
+$ django-upgrade --target-version 4.1 myapp/core/models.py
+  </code></pre>
+</section>
+
+<section>
+  <h3><code>on_delete</code> argument</h3>
+  <p>Django 1.9+</p>
+  <pre><code class=language-diff data-trim>
+-models.ForeignKey("auth.User")
++models.ForeignKey("auth.User", on_delete=models.CASCADE)
+  </code></pre>
+</section>
+
+<section>
+  <h3>URL’s</h3>
+  <p>Django 2.0+</p>
+  <pre><code class=language-diff data-trim>
+-from django.conf.urls import include, url
++from django.urls import include, path, re_path
+
+ urlpatterns = [
+-    url(r'^$', views.index, name='index'),
++    path('', views.index, name='index'),
+ ]
+  </code></pre>
+</section>
+
+<section>
+  <h3>URL’s</h3>
+  <p>Django 2.0+</p>
+  <pre><code class=language-diff data-trim>
+ from django.urls import include, path, re_path
+
+ urlpatterns = [
+-    re_path(r'^post/(?P&lt;slug&gt;[-a-zA-Z0-9_]+)/$', views.post),
++    path('post/&lt;slug:slug&gt;/', views.post),
+ ]
+  </code></pre>
+</section>
+
+<section>
+  <h3><code>HttpRequest.headers</code></h3>
+  <p>Django 2.2+</p>
+  <pre><code class=language-diff data-trim>
+-self.request.META.get('HTTP_SERVER', '')
++self.request.headers.get('Server', '')
+  </code></pre>
+</section>
+
+<section>
+  <h3><code>@admin.action()</code></h3>
+  <p>Django 3.2+</p>
+  <pre><code class=language-diff data-trim>
+ from django.contrib import admin
+
++@admin.action(
++    description="Publish articles",
++)
+ def make_published(modeladmin, request, queryset):
+     ...
+
+-make_published.short_description = "Publish articles"
+  </code></pre>
+</section>
+
+<section>
+  <img src=img/justin-mayer-review.png class=r-stretch>
+</section>
+
+<section>
+  <p><a href="https://github.com/adamchainz/django-upgrade">github.com/adamchainz/django-upgrade</a> 👀
+  <p class=fragment>Please test the unreleased main version 🙏
+  <p class=fragment>Contribute in sprints 🏃
+</section>
+
+</div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+
+    controls: false,
+    // center: false,
+    progress: false,
+
+    plugins: [ RevealHighlight ]
+  });
+</script>
+</body>
+</html>
